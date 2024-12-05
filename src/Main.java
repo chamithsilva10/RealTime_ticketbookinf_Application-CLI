@@ -24,28 +24,35 @@ public class Main {
             System.out.println("2. View Current Ticket Count");
             System.out.println("3. Stop Ticket System");
             System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
+            String choice = scanner.nextLine().trim();
 
             switch (choice) {
-                case 1:
-                    for (Thread thread : threads) {
-                        thread.start();
+                case "1":
+                    if (!vendor.isAlive() && !customer.isAlive()) {
+                        for (Thread thread : threads) {
+                            thread.start();
+                        }
+                        System.out.println("System started.");
+                    } else {
+                        System.out.println("System is already running.");
                     }
                     break;
-                case 2:
+                case "2":
                     System.out.println("Current Tickets: " + ticketPool.getTicketCount());
                     break;
-                case 3:
+                case "3":
                     for (Thread thread : threads) {
                         thread.interrupt();
                     }
                     running = false;
+                    System.out.println("System shutting down.");
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
         }
 
-        System.out.println("System shut down.");
+        scanner.close();
+        System.out.println("System stopped.");
     }
 }
